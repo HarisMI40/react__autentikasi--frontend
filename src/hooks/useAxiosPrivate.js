@@ -26,12 +26,17 @@ const useAxiosPrivate = () => {
                 console.log("ada error" + error?.response?.status);
                 const prevRequest = error?.config;
                 if (error?.response?.status === 403 && !prevRequest?.sent) {
-                    prevRequest.sent = true;
+                    // prevRequest.sent = true;
                     console.log("ganti token");
                     console.log(auth.accessToken);
                     const newAccessToken = await refresh();
-                    prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-                    return axiosPrivate(prevRequest);
+                    return axiosPrivate({
+                        ...prevRequest,
+                        headers : {...prevRequest.headers, Authorization: `Bearer ${newAccessToken}`},
+                       sent : true
+                    });
+                    // prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+                    // return axiosPrivate(prevRequest);
                 }
                 return Promise.reject(error);
             }
