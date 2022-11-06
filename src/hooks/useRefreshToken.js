@@ -1,0 +1,26 @@
+import axios from '../api/axios';
+import useAuth from './useAuth';
+
+const useRefreshToken = () => {
+    const { setAuth, auth } = useAuth();
+
+    const refresh = async () => {
+        // config.headers['Authorization'] = `Bearer ${auth?.accessToken}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${auth?.accessToken}`
+        const response = await axios.get('/refresh', {
+            // withCredentials: true
+            // headers : {
+            //     Authorization : `Bearer ${auth?.accessToken}`
+            // }
+        });
+        setAuth(prev => {
+            console.log(JSON.stringify(prev));
+            console.log(response.data.authorisation.token);
+            return { ...prev, accessToken:  response.data.authorisation.token }
+        });
+        return response.data.authorisation.token;
+    }
+    return refresh;
+};
+
+export default useRefreshToken;
