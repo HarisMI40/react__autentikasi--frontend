@@ -21,6 +21,7 @@ const Users = () => {
                 console.log(response.data);
                 isMounted && setUsers(response.data.users);
             } catch (err) {
+                console.log("users.js error ");
                 console.error(err);
                 // navigate('/login', { state: { from: location }, replace: true });
             }
@@ -30,7 +31,7 @@ const Users = () => {
 
         return () => {
             isMounted = false;
-            controller.abort();
+            controller.abort(); // untuk membatalkan fetching data
         }
     }, [])
     return (
