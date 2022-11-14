@@ -15,15 +15,17 @@ const useRefreshToken = () => {
         });
         setAuth(prev => {
             console.log(JSON.stringify(prev));
-            console.log(response.data.authorisation.token);
+            console.log(response.data.token);
             console.log(`roles di refresh : `);
             console.log(response?.data);
             return { 
                 ...prev, 
-                // roles : response?.data?.user?.roles,
-                accessToken:  response.data.authorisation.token }
+                roles : response?.data?.user?.roles,
+                accessToken:  response.data.token 
+                // accessToken:  response.data.authorisation.token 
+            }
         });
-        return response.data.authorisation.token;
+        return response.data.token;
     }
     return refresh;
 };
